@@ -1,7 +1,8 @@
-import { auth } from "@/auth";
-import { Button } from "@/components/ui/button";
+import ProfileCard from "./profile-card";
 
-import { signOut } from "@/auth";
+import { auth } from "@/auth";
+import SignOut from "./sign-out";
+import Playlists from "./playlists";
 
 const Profile = async () => {
 	const session = await auth();
@@ -10,17 +11,16 @@ const Profile = async () => {
 		return <div>Not authenticated.</div>;
 	}
 
+	if (!session?.user) return null;
+
+	// console.log(session?.user);
+
 	return (
-		<form
-			action={async () => {
-				"use server";
-				await signOut({ redirectTo: "/" });
-			}}
-		>
-			<Button type="submit" className="hover:cursor-pointer">
-				Sign out
-			</Button>
-		</form>
+		<div>
+			<ProfileCard profile={session?.user} />
+			<Playlists />
+			<SignOut />
+		</div>
 	);
 };
 
