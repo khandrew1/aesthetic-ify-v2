@@ -10,7 +10,7 @@ const Landing = () => {
 			<form
 				action={async () => {
 					"use server";
-					await signIn("spotify");
+					await signIn("spotify", { redirectTo: "/profile" });
 				}}
 			>
 				<Button type="submit" className="flex hover:cursor-pointer">
