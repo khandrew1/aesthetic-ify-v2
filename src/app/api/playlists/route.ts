@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
 		image: item.images[0]?.url,
 		name: item.name,
 		tracks: item.tracks,
+		url: item.external_urls.spotify,
 	}));
 
 	console.log(playlists.next);

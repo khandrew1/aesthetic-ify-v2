@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
@@ -8,19 +9,21 @@ import type { PlaylistItemType, PlaylistAPIResponse } from "@/types/playlist";
 
 const PlaylistItem = ({ item }: { item: PlaylistItemType }) => {
 	return (
-		<div className="flex gap-x-3 bg-muted p-2 border-1 border-background h-24">
-			<Image
-				src={item.image || ""}
-				height={75}
-				width={75}
-				alt={item.name}
-				className="aspect-square"
-			/>
-			<div className="flex flex-col justify-center">
-				<p className="font-bold text-xl">{item.name}</p>
-				<p className="italic text-sm">{item.description}</p>
+		<Link href={`/playlist/${item.id}`} className="w-full hover:cursor-pointer">
+			<div className="flex gap-x-3 bg-muted p-2 border-1 border-background h-24">
+				<Image
+					src={item.image || ""}
+					height={75}
+					width={75}
+					alt={item.name}
+					className="aspect-square"
+				/>
+				<div className="flex flex-col justify-center">
+					<p className="font-bold text-xl">{item.name}</p>
+					<p className="italic text-sm">{item.description}</p>
+				</div>
 			</div>
-		</div>
+		</Link>
 	);
 };
 
@@ -79,11 +82,11 @@ const Playlists = () => {
 	}, [hasNextPage, fetchNextPage, isFetchingNextPage]);
 
 	return (
-		<div>
+		<div className="w-1/4">
 			{isLoading ? (
 				<div>Loading...</div>
 			) : (
-				<div className="h-64 w-1/4 bg-muted overflow-y-scroll" ref={parentRef}>
+				<div className="h-64 bg-muted overflow-y-scroll" ref={parentRef}>
 					<div
 						className="w-full relative"
 						style={{ height: `${rowVirtualizer.getTotalSize()}px` }}

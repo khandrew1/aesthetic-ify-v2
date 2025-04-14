@@ -39,6 +39,7 @@ export type PlaylistItemType = {
 		href: string;
 		total: number;
 	};
+	url: string;
 };
 
 export type SpotifyAPIResponse = {

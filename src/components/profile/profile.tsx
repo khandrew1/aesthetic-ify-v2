@@ -13,13 +13,13 @@ const Profile = async () => {
 
 	if (!session?.user) return null;
 
-	// console.log(session?.user);
-
 	return (
-		<div>
+		<div className="flex flex-col h-full gap-3 justify-center items-center border-4">
 			<ProfileCard profile={session?.user} />
 			<Playlists />
-			<SignOut />
+			<div className="flex w-1/4 justify-end">
+				<SignOut />
+			</div>
 		</div>
 	);
 };

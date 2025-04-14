@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
 		remotePatterns: [
 			new URL("https://i.scdn.co/image/**"),
 			new URL("https://image-cdn-*.spotifycdn.com/image/**"),
+			new URL("https://commons.wikimedia.org/wiki/**"),
+			new URL("https://assets.berty.tech/**"),
 		],
 	},
 };
