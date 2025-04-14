@@ -1,14 +1,20 @@
 import { auth } from "@/auth";
 
-export async function GET() {
+import type { SpotifyPlaylistType } from "@/types/playlist";
+import type { NextRequest } from "next/server";
+
+export async function GET(req: NextRequest) {
 	const session = await auth();
 
-	console.log(session);
+	const last = req.nextUrl.searchParams.get("last");
 
-	const res = await fetch("https://api.spotify.com/v1/me/playlists?limit=15", {
-		method: "GET",
-		headers: { Authorization: `Bearer ${session?.accessToken}` },
-	});
+	const res = await fetch(
+		`https://api.spotify.com/v1/me/playlists?limit=3&offset=${last}`,
+		{
+			method: "GET",
+			headers: { Authorization: `Bearer ${session?.accessToken}` },
+		},
+	);
 
 	if (!res.ok) {
 		return new Response("Failed to fetch playlists", { status: 500 });
@@ -16,10 +22,8 @@ export async function GET() {
 
 	const playlists = await res.json();
 
-	// console.log(playlists);
-
 	// clean playlists
-	playlists.items = playlists.items.map((item) => ({
+	playlists.items = playlists.items.map((item: SpotifyPlaylistType) => ({
 		description: item.description,
 		href: item.href,
 		id: item.id,
@@ -28,7 +32,10 @@ export async function GET() {
 		tracks: item.tracks,
 	}));
 
-	console.log(playlists.items);
+	console.log(playlists.next);
 
-	return Response.json({ playlists });
+	const nextPage =
+		playlists.next === null ? undefined : playlists.offset + playlists.limit;
+
+	return Response.json({ next: nextPage, res: playlists });
 }
